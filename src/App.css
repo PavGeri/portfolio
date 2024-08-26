@@ -1,38 +1,72 @@
-.App {
-  text-align: center;
+.ReactTerminal {
+    height: 550px;
+    width: 1200px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.ReactTerminalContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#terminalEditor{
+    overflow: auto;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* width */
+#terminalEditor::-webkit-scrollbar {
+    width: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+/* Track */
+#terminalEditor::-webkit-scrollbar-track {
+    background: hsl(300, 76%, 15%); 
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Handle */
+#terminalEditor::-webkit-scrollbar-thumb {
+    background: hsl(300, 76%, 30%);
+    border-radius: 4px;
+}
+
+/* Handle on hover */
+#terminalEditor::-webkit-scrollbar-thumb:hover {
+    background: hsl(300, 76%, 38%);
+    border-radius: 4px;
+}
+
+#WelcomeMessage{
+    user-select: none;
+    margin: 0;
+    padding: 0;
+    line-height: 1rem;
+}
+
+#WelcomeMessageText {
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#WelcomeMessageText > * {
+    cursor: pointer;
+}
+
+#WelcomeMessage {
+    background-image: repeating-linear-gradient(90deg, #14ffe9 0%, #ffc800 16.66666%, #ff00e0 33.33333%, #14ffe9 50.0%);;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 10s linear infinite;
+    background-size: 100vw 100vh;
+}
+
+@keyframes rainbow {
+    0% {
+        background-position: 0vw;
+    }
+    100% {
+        background-position: 100vw;
+    } 
 }
