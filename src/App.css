@@ -70,3 +70,20 @@
         background-position: 100vw;
     } 
 }
+
+.help-message {
+    margin-left: 43.2px;
+}
+
+.help-message > dt {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.help-message > dt::before {
+    content: '- ';
+}
+
+.help-message > dd {
+    margin-bottom: 10px;
+}

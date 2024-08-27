@@ -200,6 +200,18 @@ const fonts:Array<string> = [
   "Whimsy",
 ];
 
+class Command {
+  readonly name: string;
+  readonly description: string;
+  readonly functionality: string | JSX.Element | Function;
+  
+  constructor(commandName: string, commandDescription: string, commandFunctionality: string | JSX.Element | Function) {
+    this.name = commandName;
+    this.description = commandDescription;
+    this.functionality = commandFunctionality;
+  }
+}
+
 function shuffleArray(array:Array<any>) {
   for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -209,9 +221,20 @@ function shuffleArray(array:Array<any>) {
 
 
 function App() {
-  const commands = {
-    whoami: "guest",
-  };
+  const commands: Command[] = [
+    new Command('help', 'Display information about builtin commands.', () => {
+      return (
+        <dl className='help-message'>
+          {
+            commands.map((command, index) => <React.Fragment key={index}><dt>{command.name}</dt><dd>{command.description}</dd></React.Fragment>)
+          }
+        </dl>
+      );
+    }),
+    new Command('whoami', 'Print the user name associated with the current effective user ID.', 'guest')
+  ];
+  const commandsDict = Object.assign({}, ...commands.map((command) => ({[command.name]: command.functionality})));
+  
   let fontStack:Array<string> = [...fonts];
   shuffleArray(fontStack);
   let font: string;
@@ -268,7 +291,7 @@ function App() {
       <div className='ReactTerminal'>
         <ReactTerminal
           welcomeMessage={welcomeMessage}
-          commands={commands}
+          commands={commandsDict}
           theme='dark'
         />
       </div>
