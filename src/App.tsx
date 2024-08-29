@@ -221,12 +221,35 @@ function shuffleArray(array:Array<any>) {
 
 
 function App() {
+  window.addEventListener('resize', () => {
+    const welcomeMessageText:HTMLElement | null = document.getElementById('WelcomeMessageText');
+    welcomeMessageText!.removeAttribute('style');
+    const welcomeMessage:HTMLElement | null = document.getElementById('WelcomeMessage');
+    welcomeMessage!.removeAttribute('style');
+    if (welcomeMessageText) {
+      welcomeMessageText.innerText = welcomeString;
+      if (window.screen.width >= 1300) {
+        welcomeMessageText.style.setProperty('font-size', `${font!=='Binary'?115/welcomeString.indexOf('\n'):0.8}em`);
+      }
+      else {
+        const scaleValue = (window.screen.width*0.9)/welcomeMessageText.offsetWidth;
+        welcomeMessage!.style.setProperty('margin-bottom', `${(scaleValue * welcomeMessage!.offsetHeight) - welcomeMessage!.offsetHeight}px`);
+        console.log(`${welcomeMessage!.offsetHeight} - (${scaleValue} * ${welcomeMessage!.offsetHeight}) = ${welcomeMessage!.offsetHeight - (scaleValue * welcomeMessage!.offsetHeight)}`);
+        welcomeMessage!.style.transform = `scale(${scaleValue})`;
+        welcomeMessage!.style.setProperty('min-width', `${welcomeMessageText.offsetWidth}px`);
+        welcomeMessage!.style.setProperty('width', `${welcomeMessageText.offsetWidth}px`);
+      }
+    }
+  });
+
   const commands: Command[] = [
     new Command('help', 'Display information about builtin commands.', () => {
+      const commandsWithClear = [...commands];
+      commandsWithClear.push(new Command('clear', 'Clears your terminal\'s screen if this is possible.', ()=>{}));
       return (
         <dl className='help-message'>
           {
-            commands.map((command, index) => <React.Fragment key={index}><dt>{command.name}</dt><dd>{command.description}</dd></React.Fragment>)
+            commandsWithClear.map((command, index) => <React.Fragment key={index}><dt>{command.name}</dt><dd>{command.description}</dd></React.Fragment>)
           }
         </dl>
       );
@@ -267,8 +290,17 @@ function App() {
     const welcomeMessageText:HTMLElement | null = document.getElementById('WelcomeMessageText');
     if (welcomeMessageText) {
       welcomeMessageText.innerText = welcomeString;
-      welcomeMessageText.style.setProperty('font-size', `${font!='Binary'?115/welcomeString.indexOf('\n'):0.8}em`)
-      // welcomeMessageText.style.setProperty('animation-duration', `${welcomeString.indexOf('\n')/115*50}s`)
+      if (window.screen.width >= 1300) {
+        welcomeMessageText.style.setProperty('font-size', `${font!=='Binary'?115/welcomeString.indexOf('\n'):0.8}em`);
+      }
+      else {
+        const welcomeMessage:HTMLElement | null = document.getElementById('WelcomeMessage');
+        const scaleValue = (window.screen.width*0.9)/welcomeMessageText.offsetWidth;
+        welcomeMessage!.style.setProperty('margin-bottom', `${(scaleValue * welcomeMessage!.offsetHeight) - welcomeMessage!.offsetHeight}px`);
+        welcomeMessage!.style.transform = `scale(${scaleValue})`;
+        welcomeMessage!.style.setProperty('min-width', `${welcomeMessageText.offsetWidth}px`);
+        welcomeMessage!.style.setProperty('width', `${welcomeMessageText.offsetWidth}px`);
+      }
       welcomeMessageText.onclick = () => {
         loadFont().then(afterLoadFont);
       }
@@ -278,11 +310,12 @@ function App() {
   loadFont().then(afterLoadFont);
 
   const welcomeMessage = (
-    <pre>
+    <pre id='WelcomeMessageContainer'>
       <div id='WelcomeMessage'>
         <span id='WelcomeMessageText'></span>
       </div>
-    <br/><br/>Welcome to my portfolio!<br/>This is currently a placeholder, until I finish with the final version.<br/>Type 'help' for available commands!<br/><br/></pre>);
+      <div id='IntroMessage'>
+    <br/><br/>Welcome to my portfolio!<br/>This is currently a placeholder, until I finish with the final version.<br/>Type 'help' for available commands!<br/><br/></div></pre>);
   
 
 
